@@ -1,6 +1,7 @@
 // import Vue from 'vue'
 // import VueRouter from 'vue-router'
 import Home from '@/Home'
+import UserHome from '@/views/person/UserHome'
 /*import Index from '@/views/Index'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
@@ -31,6 +32,48 @@ const router = new VueRouter({
     },
     {
       path: '',
+      name: 'UserHome',
+      component: UserHome,
+      children: [
+        {
+          path: '/newsuser/personal/:id',
+          component: r => require.ensure([], () => r(require('@/views/person/Personal')), 'personal'),
+          meta: {
+            requireLogin: true
+          },
+          children: [
+            {
+              // path: '/personal/info/:id',
+              path: '/newsuser/personal/info/:id',
+              name:'info',
+              component: r => require.ensure([], () => r(require('@/views/person/Info')), 'info')
+            },
+            {
+              path:'/newsuser/personal/myarticle/:id',
+              name:'myarticle',
+              component: r => require.ensure([], () => r(require('@/views/person/MyArticle')), 'myarticle')
+            },
+            {
+              path:'/newsuser/personal/mycollect/:id',
+              name:'mycollect',
+              component: r => require.ensure([], () => r(require('@/views/person/MyCollect')), 'mycollect')
+            },
+            {
+              path:'/newsuser/personal/myfan/:id',
+              name:'myfan',
+              component: r => require.ensure([], () => r(require('@/views/person/MyFanAndFollow')), 'myfan')
+            },
+            {
+              path:'/newsuser/personal/myfollow/:id',
+              name:'myfollow',
+              component: r => require.ensure([], () => r(require('@/views/person/MyFanAndFollow')), 'myfollow')
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: '',
       name: 'Home',
       component: Home,
       children: [
@@ -38,6 +81,7 @@ const router = new VueRouter({
           path: '/',
           component: r => require.ensure([], () => r(require('@/views/Index')), 'index')
         },
+        
         {
           path: '/log',
           component: r => require.ensure([], () => r(require('@/views/Log')), 'log')

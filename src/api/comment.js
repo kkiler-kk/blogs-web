@@ -9,7 +9,6 @@ export function getCommentsByArticle(id) {
 }
 
 export function publishComment(comment,token) {
-  console.info(comment)
   return request({
     headers: {'Authorization': token},
     url: '/comments/create/change',
