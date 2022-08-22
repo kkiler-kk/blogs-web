@@ -1,7 +1,7 @@
 import request from '@/request'
 
 
-export function getArticles(query, page) {
+export function getArticles(query, page, userId) {
   return request({
     url: '/articles',
     method: 'post',
@@ -13,6 +13,7 @@ export function getArticles(query, page) {
       year: query.year,
       month: query.month,
       tagId: query.tagId,
+      userId: parseInt(userId),
       categoryId: query.categoryId
     }
   })

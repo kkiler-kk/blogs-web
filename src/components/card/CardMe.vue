@@ -1,66 +1,97 @@
 <template>
   <el-card>
-    <h1 class="me-author-name">KK</h1>
-    <div class="me-author-description">
-      <span><i class="el-icon-location-outline"></i> &nbsp;中国&北京</span>
-      <span><i class="me-icon-job"></i> &nbsp; kkBlogs</span>
-    </div>
-    <div class="me-author-tool">
-      <i @click="showTool(qq)" :title="qq.title" class="iconfont icon-qq"></i>
-      <i @click="showTool(bilibili)" :title="bilibili.title" class="iconfont icon-bilibili-fill"></i>
+    <div class="card">
+      <div>
+        <img :src="avatar" @click="viewInfo" :title="nikeName" />
+      </div>
+      <p>{{ nikeName }}</p>
+      <p>{{ signature }}</p>
     </div>
   </el-card>
 
 </template>
 
 <script>
-  export default {
-    name: 'CardMe',
-    data() {
-      return {
-        qq: {title: 'QQ', message: '3258261356'},
-        bilibili: {
-          title: '哔哩哔哩',
-          message: '<a target="_blank" href="https://space.bilibili.com/280466591">https://space.bilibili.com/280466591</a>'
-        }
+import { getUserInfo } from '@/api/user'
+export default {
+  name: 'CardMe',
+  created() {
+    this.load()
+  },
+  data() {
+    return {
+      avatar: '@/assets/img/iamge.png',
+      nikeName: 'KK',
+      signature: '散落的星骸',
+    }
+  },
+  methods: {
+    load() {
+      let followId = this.$route.params.id
+      let userId = this.$store.state.id
+      if (followId == undefined && userId > 0) {
+        this.avatar = this.$store.state.avatar
+        this.nikeName = this.$store.state.name
+        this.signature = this.$store.state.signature
+      } else {
+        getUserInfo(followId).then(data => {
+          if (data.success) {
+            this.avatar = data.data.avatar
+            this.nikeName = data.data.nikeName
+            this.signature = data.data.signature
+          } else {
+            this.$message({ type: 'error', message: '稍后重试', showClose: true })
+          }
+        })
       }
     },
-    methods: {
-      showTool(tool) {
-        this.$message({
-          duration: 0,
-          showClose: true,
-          dangerouslyUseHTMLString: true,
-          message: '<strong>' + tool.message + '</strong>'
-        });
+    viewInfo() {
+      let followId = this.$route.params.id
+      let userId = this.$store.state.id
+      if (followId == undefined && userId > 0) {
+        this.$router.push({ path: '/newsuser/personal/info/' + this.$store.state.id })
+      } else {
+        this.$router.push({ path: '/newsuser/user/' + followId })
       }
+    },
+    showTool(tool) {
+      this.$message({
+        duration: 0,
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: '<strong>' + tool.message + '</strong>'
+      });
     }
   }
+}
 </script>
 
 <style scoped>
-  .me-author-name {
-    text-align: center;
-    font-size: 30px;
-    border-bottom: 1px solid #5FB878;
-  }
+.card {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin: 0 20px;
+  padding: 20px; */
+  background: #fff;
+  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); */
+}
 
-  .me-author-description {
-    padding: 8px 0;
-  }
+.card img {
 
-  .me-icon-job {
-    padding-left: 16px;
-  }
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  margin: 20px 0;
+}
 
-  .me-author-tool {
-    text-align: center;
-    padding-top: 10px;
-  }
-
-  .me-author-tool i {
-    cursor: pointer;
-    padding: 4px 10px;
-    font-size: 30px;
-  }
+.social i {
+  color: lightgray;
+  padding: 0 10px;
+}
 </style>

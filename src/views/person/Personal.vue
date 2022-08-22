@@ -59,11 +59,11 @@
                                 <i class="el-icon-info"></i>
                                 <span slot="title">简介</span>
                             </el-menu-item>
-                            <!-- <el-menu-item index="mymessage" v-if="this.$route.params.id == this.$store.state.id"
-                                :route="{ name: 'myarticle', params: $route.params.id }">
+                            <el-menu-item index="mymessage" v-if="this.$route.params.id == this.$store.state.id"
+                                :route="{ name: 'messages', params: $route.params.id }">
                                 <i class="el-icon-view"></i>
                                 <span slot="title">消息</span>
-                            </el-menu-item> -->
+                            </el-menu-item>
                             <el-menu-item index="myarticle" :route="{ name: 'myarticle', params: $route.params.id }">
                                 <i class="el-icon-edit-outline"></i>
                                 <span slot="title">发帖</span>
@@ -400,7 +400,7 @@ export default {
 }
 
 .box-card {
-    height: 500px;
+    height: 550px;
 }
 
 /*ui样式*/

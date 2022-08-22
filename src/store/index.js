@@ -11,6 +11,7 @@ export default new Vuex.Store({
     account: '',
     name: '',
     avatar: '',
+    signature: '',
     token: getToken(),
   },
   mutations: {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     SET_ID: (state, id) => {
       state.id = id
+    },
+    SET_SIGNATURE: (state, signature) => {
+      state.signature = signature
     }
   },
   actions: {
@@ -54,15 +58,17 @@ export default new Vuex.Store({
         getUserInfo(state.token).then(data => {
           if (data.success) {
             commit('SET_ACCOUNT', data.data.account)
-            commit('SET_NAME', data.data.nickname)
+            commit('SET_NAME', data.data.nikeName)
             commit('SET_AVATAR', data.data.avatar)
             commit('SET_ID', data.data.id)
+            commit('SET_SIGNATURE', data.data.signature)
             resolve(data)
           } else {
             commit('SET_ACCOUNT', '')
-            commit('SET_NAME', '')
+            commit('SET_NAME', '暂未登录')
             commit('SET_AVATAR', '')
             commit('SET_ID', '')
+            commit('SET_SIGNATURE', '')
             removeToken()
             resolve(data)
           }

@@ -7,11 +7,25 @@ export function userInfo(userId) {
     })
   }
   
-
+  export function getUserInfo(userId) {
+    userId = parseInt(userId)
+    return request({
+      url: `/users/${userId}`,
+      method: 'post'
+    })
+  }
+  
   export function myArticle(userId) {
     userId = parseInt(userId)
     return request({
         url: `/users/article/${userId}`,
         method: 'post'
     })
+  }
+  export function updateUser(form) {
+    return request({
+      url: '/users/change/info',
+      method: 'post',
+      data: form
+  })
   }
