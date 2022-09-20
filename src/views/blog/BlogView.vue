@@ -26,12 +26,19 @@
 
             </div>
             <el-button v-if="this.article.author.id == this.$store.state.id" @click="editArticle()"
-              style="position: absolute;left: 60%;" size="mini" round icon="el-icon-edit">编辑</el-button>
+              style="position: absolute;left: 75%;" size="mini" round icon="el-icon-edit">编辑</el-button>
           </div>
           <div class="me-view-content">
             <markdown-editor :editor=article.editor></markdown-editor>
           </div>
-
+          <div class="me-like">
+            <i class="iconfont icon-icon" v-if="isLike()"></i>
+            <i class="iconfont icon-dianzan" v-else></i>
+            {{ article.likeCount }}
+            <i class="iconfont icon-shoucang" v-if="isGood()"></i>
+            <i class="iconfont icon-shoucangxiao" v-else></i>
+            {{ article.goodCount }}
+          </div>
           <div class="me-view-end">
             <el-alert title="文章End..." type="success" center :closable="false">
             </el-alert>
@@ -56,7 +63,7 @@
               <el-row :gutter="20">
                 <el-col :span="2">
                   <a class="">
-                    <img class="me-view-picture" :src="avatar"></img>
+                    <img class="me-view-picture" :src="avatar" />
                   </a>
                 </el-col>
                 <el-col :span="22">
@@ -95,8 +102,10 @@ import MarkdownEditor from '@/components/markdown/MarkdownEditor'
 import CommmentItem from '@/components/comment/CommentItem'
 import { viewArticle } from '@/api/article'
 import { getCommentsByArticle, publishComment } from '@/api/comment'
-
+import { isGood } from '@/api/collect'
+import { isLike } from '@/api/like'
 import default_avatar from '@/assets/img/default_avatar.png'
+import { getToken } from '../../request/token'
 
 export default {
   name: 'BlogView',
@@ -150,7 +159,6 @@ export default {
       this.$router.push({ path: `/${type}/${id}` })
     },
     viewInfo() {
-      debugger
       let followId = this.article.author.id
       let userId = this.$store.state.id
       if (followId == undefined && userId > 0) {
@@ -202,7 +210,24 @@ export default {
         }
       })
     },
-
+    async isLike() {
+      // 没登录
+      if (!getToken()) return true;
+      let data = { "articleId": parseInt(this.$route.params.id), "userId": parseInt(this.$store.state.id) }
+      await isLike(data).then(data => {
+        return data.data
+      })
+      return true
+    },
+    async isGood() {
+      // 没登录
+      if (!getToken()) return true;
+      let data = { "articleId": parseInt(this.$route.params.id), "userId": parseInt(this.$store.state.id) }
+      await isGood(data).then(data => {
+        return data.data
+      })
+      return true
+    },
     getCommentsByArticle() {
       let that = this
       getCommentsByArticle(that.article.id).then(data => {
@@ -243,7 +268,7 @@ export default {
 }
 
 .me-view-container {
-  width: 800px;
+  width: 100%;
 }
 
 .el-main {

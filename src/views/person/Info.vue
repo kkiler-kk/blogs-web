@@ -1,99 +1,7 @@
 <template>
-
     <div>
         <el-card>
-            <el-descriptions class="margin-top" title="简介" :column="2" border>
-                <template slot="extra">
-                    <el-button type="primary" v-if="$route.params.id == $store.state.id" size="small">操作</el-button>
-                </template>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-picture-outline"></i>
-                        头像
-                    </template>
-                    <img class="img" :src="avatar" alt="" />
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-user"></i>
-                        账户名
-                    </template>
-                    {{ account }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-s-custom"></i>
-                        昵称
-                    </template>
-                    {{ nikeName }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-odometer"></i>
-                        年龄
-                    </template>
-                    {{ age }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-male"></i>
-                        <i class="el-icon-female"></i>
-                        性别
-                    </template>
-                    <el-tag size="small">{{ sex }}</el-tag>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-message"></i>
-                        邮箱Email
-                    </template>
-                    {{ email }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-mobile-phone"></i>
-                        手机号码
-                    </template>
-                    {{ mobilePhoneNumber }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-location-outline"></i>
-                        地区
-                    </template>
-                    {{ city }}
-                </el-descriptions-item>
 
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-office-building"></i>
-                        职业
-                    </template>
-                    {{ work }}
-                </el-descriptions-item>
-
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-basketball"></i>
-                        兴趣爱好
-                    </template>
-                    {{ hobby }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-magic-stick"></i>
-                        个性签名
-                    </template>
-                    {{ signature }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-date"></i>
-                        注册日期
-                    </template>
-                    {{ createDate | formatDate }}
-                </el-descriptions-item>
-            </el-descriptions>
         </el-card>
     </div>
 </template>
@@ -108,9 +16,9 @@ export default {
             account: String,
             age: Number,
             email: String,
-            mobilePhoneNumber: String,
+            phone: String,
             city: String,
-            createDate: Number,
+            createDate: Date,
             nikeName: String,
             sex: String,
             //work: String,
@@ -118,8 +26,11 @@ export default {
             signature: String,
         };
     },
-    mounted() {
+    created() {
         this.load();
+    },
+    mounted() {
+
     },
     methods: {
         load() {
@@ -131,7 +42,7 @@ export default {
                     this.email = res.data.email;
                     this.phone = res.data.phone;
                     this.city = res.data.city;
-                    this.createDate = res.data.birthDate;
+                    this.createDate = this.formatDate(res.data.birthDate);
                     this.nikeName = res.data.nikeName;
                     this.sex = res.data.sex == 1 ? "男" : res.data.sex == 2 ? "女" : "未知";
                     this.work = res.data.work;
@@ -141,14 +52,34 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 });
-        },
+        },/**
+     * 时间格式转换
+     * 毫秒-xxxx-xx-xx xx:xx
+     * */
+        formatDate(time) {
+            var date = new Date(time)
+            var y = date.getFullYear()
+            var m = date.getMonth() + 1
+            m = m < 10 ? ('0' + m) : m
+            var d = date.getDate()
+            d = d < 10 ? ('0' + d) : d
+            var h = date.getHours()
+            h = h < 10 ? ('0' + h) : h
+            var minute = date.getMinutes()
+            var second = date.getSeconds()
+            minute = minute < 10 ? ('0' + minute) : minute
+            second = second < 10 ? ('0' + second) : second
+            return y + '-' + m + '-' + d
+
+        }
+
     },
 };
 </script>
 
 <style scoped>
-.img {
-    width: 80px;
-    height: 80px;
+img {
+    width: 150px;
+    height: 150px;
 }
 </style>

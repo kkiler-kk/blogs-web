@@ -2,12 +2,16 @@
   <el-card class="me-area" :body-style="{ padding: '16px' }">
     <div class="me-article-header">
       <a @click="view(id)" class="me-article-title">{{ title }}</a>
-      <el-button v-if="weight > 0" class="me-article-icon" type="text">置顶</el-button>
-      <span class="me-pull-right me-article-count">
-        <i class="el-icon-message"></i>&nbsp;{{ commentCounts }}
-      </span>
+      <el-button v-if="weight > 0" class="iconfont icon-zhiding" type="text">置顶</el-button>
+
       <span class="me-pull-right me-article-count">
         <i class="el-icon-view"></i>&nbsp;{{ viewCount }}
+      </span>
+      <span class="me-pull-right me-article-count">
+        <i class="iconfont icon-shouye"></i>&nbsp;{{ commentCounts }}
+      </span>
+      <span class="me-pull-right me-article-count">
+        <i class="iconfont icon-icon"></i>&nbsp;{{ likeCount }}
       </span>
     </div>
 
@@ -40,6 +44,7 @@ export default {
     title: String,
     commentCounts: Number,
     viewCount: Number,
+    likeCount: Number,
     summary: String,
     author: String,
     tags: Array,
@@ -50,7 +55,6 @@ export default {
   },
   methods: {
     view(id) {
-      console.log(id)
       this.$router.push({ path: `/view/${id}` })
     }
   }
@@ -85,6 +89,10 @@ export default {
   font-size: 13px;
   line-height: 24px;
   margin-bottom: 10px;
+  width: 30rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .me-article-author {

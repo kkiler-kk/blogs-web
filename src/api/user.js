@@ -22,8 +22,9 @@ export function userInfo(userId) {
         method: 'post'
     })
   }
-  export function updateUser(form) {
+  export function updateUser(token, form) {
     return request({
+      headers: {'Authorization': token},
       url: '/users/change/info',
       method: 'post',
       data: form

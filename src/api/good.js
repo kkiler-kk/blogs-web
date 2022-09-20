@@ -1,7 +1,7 @@
 import request from '@/request'
 export function mygoodCount(userId) {
     return request({
-        url: `/follow/${userId}`,
+        url: `/fans/${userId}`,
         method: 'post'
       })
 }

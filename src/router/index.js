@@ -63,7 +63,14 @@ const router = new VueRouter({
         {
           path: '/:type/:id',
           component: r => require.ensure([], () => r(require('@/views/blog/BlogCategoryTag')), 'blogcategorytag')
-        }
+        },
+        {
+          path: '/program/source/code',
+          meta: {
+            isLogin: false
+          },
+          component: r => require.ensure([], () => r(require('@/views/common/SourceCode')), 'SourceCode')
+        },
       ]
     },
     {
@@ -74,6 +81,15 @@ const router = new VueRouter({
       path: '/register',
       component: r => require.ensure([], () => r(require('@/views/Register')), 'register')
     },
+    {
+      path: '/404',
+      meta: {
+        title: '好像弄丢了哦',
+        isLogin: false
+      },
+      component: r => require.ensure([], () => r(require('@/views/common/404')), '404')
+    },
+   
     {
       path: '/newsuser',
       name: 'UserHome',
@@ -129,8 +145,13 @@ const router = new VueRouter({
         },
         
     ],
-    },
     
+    },
+    // 所有未定义路由，全部重定向到404页，必须放在最后
+    {
+    path: '*',
+    redirect: '/404'
+    }
 
   ],
   scrollBehavior(to, from, savedPosition) {

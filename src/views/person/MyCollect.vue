@@ -1,7 +1,7 @@
 <template>
     <div class="myart1">
         <article-item v-for="a in allData" :key="a.id" v-bind="a" />
-        <el-empty v-if="allData.length == 0" :image-size="250" description="暂未收藏任何新闻额"></el-empty>
+        <el-empty v-if="allData.length == 0" :image-size="250" description="暂未收藏任何文章额"></el-empty>
     </div>
 </template>
 
@@ -24,9 +24,7 @@ export default {
             myCollect(this.$route.params.id)
                 .then((res) => {
                     console.log(res);
-                    res.data.forEach(element => {
-                        element.createDate = this.$options.filters['formatDate'](parseInt(element.createDate))
-                    });
+
                     this.allData = res.data
                 })
                 .catch((err) => {

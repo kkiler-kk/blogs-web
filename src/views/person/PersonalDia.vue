@@ -5,19 +5,28 @@
                 <div class="updateinfo">
                     <div class="left">
                         <el-form-item label="头像" prop="avatar">
-                            <img style="width:150px;height:110px" :src="form.avatar" />
+                            <el-upload class="avatar-uploader" action="http://localhost:8888/app/upload"
+                                :show-file-list="false" :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="form.avatar" style="width:150px;height:110px" :src="form.avatar"
+                                    class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
                         </el-form-item>
+                        <!-- <el-form-item label="头像" prop="avatar">
+                            <img style="width:150px;height:110px" :src="form.avatar" />
+                        </el-form-item> -->
                         <el-form-item label="账号密码" prop="password">
                             <el-input v-model="form.password"></el-input>
                         </el-form-item>
-                        <el-form-item label="昵称" prop="nickname">
-                            <el-input v-model="form.nickname"></el-input>
+                        <el-form-item label="昵称" prop="nikeName">
+                            <el-input v-model="form.nikeName"></el-input>
                         </el-form-item>
                         <el-form-item label="年龄" prop="age">
                             <el-input v-model="form.age"></el-input>
                         </el-form-item>
                         <el-form-item label="性别" prop="sex">
-                            <el-switch v-model="form.sex" active-color="#13ce66" inactive-color="#ff4949"
+                            <el-switch v-model="form.gender" active-color="#13ce66" inactive-color="#ff4949"
                                 active-text="男" inactive-text="女" :active-value="1" :inactive-value="0">
                             </el-switch>
                         </el-form-item>
@@ -33,20 +42,21 @@
                         <el-form-item label="账号" prop="account">
                             <el-input v-model="form.account" disabled></el-input>
                         </el-form-item>
-                        <el-form-item label="地区" prop="area">
-                            <el-input v-model="form.area"></el-input>
+                        <el-form-item label="地区" prop="city">
+                            <el-input v-model="form.city"></el-input>
                         </el-form-item>
-                        <el-form-item label="兴趣爱好" prop="hobby">
+                        <!-- <el-form-item label="兴趣爱好" prop="hobby">
                             <el-input v-model="form.hobby"></el-input>
+                        </el-form-item>-->
+                        <el-form-item label="出生日期" prop="birthDate">
+                            <el-date-picker v-model="form.birthDate" type="date" placeholder="选择日期">
+                            </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="职业" prop="work">
-                            <el-input v-model="form.work"></el-input>
+                        <el-form-item label="个性签名" prop="signature">
+                            <el-input v-model="form.signature"></el-input>
                         </el-form-item>
-                        <el-form-item label="个性签名" prop="design">
-                            <el-input v-model="form.design"></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号码" prop="mobilePhoneNumber">
-                            <el-input v-model="form.mobilePhoneNumber"></el-input>
+                        <el-form-item label="手机号码" prop="phone">
+                            <el-input v-model="form.phone"></el-input>
                         </el-form-item>
                     </div>
                 </div>
@@ -70,17 +80,16 @@ export default {
             form: {
                 avatar: "",
                 password: "",
-                nickname: "",
+                nikeName: "",
                 age: Number,
                 email: "",
-                mobilePhoneNumber: "",
+                phone: "",
                 sex: Number,
                 id: Number,
                 account: "",
-                area: "",
-                hobby: "",
-                work: "",
-                design: "",
+                city: "",
+                signature: "",
+                birthDate: ""
             },
             rules: {
                 nickname: [
@@ -96,13 +105,28 @@ export default {
         this.load();
     },
     methods: {
+        handleAvatarSuccess(res, file) {
+            console.log(res)
+            this.form.avatar = res.data
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
+        },
         open() {
             this.dialogVisible = true;
         },
         load() {
             userInfo(this.$store.state.id)
                 .then((res) => {
-                    console.log(res);
                     Object.assign(this.form, res.data);
                 })
                 .catch((err) => {
@@ -110,11 +134,14 @@ export default {
                 });
         },
         submit() {
-            updateUser(this.form)
+            let date = new Date(this.form.birthDate)
+            this.form.birthDate = date.getTime()
+            console.log(this.form.birthDate)
+            updateUser(this.$store.state.token, this.form)
                 .then((res) => {
-                    console.log(res);
                     this.dialogVisible = false;
                     this.$emit("flesh");
+                    this.$message({ message: '修改成功', type: 'success', showClose: true })
                 })
                 .catch((err) => {
                     console.log(err);
@@ -141,5 +168,32 @@ export default {
 
 .right {
     overflow: hidden;
+}
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
 }
 </style>

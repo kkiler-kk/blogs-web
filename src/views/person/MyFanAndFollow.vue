@@ -2,7 +2,7 @@
     <div class="fanorfollow_box">
         <div class="fanorfollow" v-for="(item, index) in allData">
             <div class="fanorfollow_left">
-                <img class="fanorfollow_img" v-image-preview :src="item.avatar" />
+                <img class="fanorfollow_img" @click="viewInfo(item.id)" v-image-preview :src="item.avatar" />
             </div>
             <div class="fanorfollow_info">
                 <div class="fanorfollow_info_top">
@@ -45,7 +45,6 @@ export default {
             if (to.path == `/newsuser/personal/myfan/${this.$route.params.id}`) {
                 myFan(this.$route.params.id)
                     .then((res) => {
-                        console.log(res);
                         this.allData = res.data;
                         myFollow(this.$route.params.id).then((res) => {
                             res.data.forEach((element) => {
@@ -59,7 +58,6 @@ export default {
             } else {
                 myFollow(this.$route.params.id)
                     .then((res) => {
-                        console.log(res);
                         this.allData = res.data;
                         res.data.forEach((element) => {
                             this.isfollowid.push(element.id);
@@ -81,7 +79,6 @@ export default {
             ) {
                 myFan(this.$route.params.id)
                     .then((res) => {
-                        console.log(res);
                         this.allData = res.data;
                         myFollow(this.$route.params.id).then((res) => {
                             res.data.forEach((element) => {
@@ -95,7 +92,6 @@ export default {
             } else {
                 myFollow(this.$route.params.id)
                     .then((res) => {
-                        console.log(res);
                         this.allData = res.data;
                         res.data.forEach((element) => {
                             this.isfollowid.push(element.id);
@@ -133,7 +129,6 @@ export default {
             if (this.isfollow) {
                 deleteFollow(this.followData)
                     .then((res) => {
-                        console.log(res.data);
                         this.isfollow = false;
                         this.$message({
                             showClose: true,
@@ -148,7 +143,6 @@ export default {
             } else if (!this.isfollow) {
                 addFollow(this.followData)
                     .then((res) => {
-                        console.log(res.data);
                         this.isfollow = true;
                         this.$message({
                             showClose: true,
@@ -165,6 +159,9 @@ export default {
         personal(id) {
             this.$router.push({ path: `/newsuser/personal/${id}` });
         },
+        viewInfo(userId) {
+            this.$router.push({ path: '/newsuser/user/' + userId })
+        },
     },
 };
 </script>
@@ -177,7 +174,7 @@ export default {
 
 .fanorfollow {
     padding: 15px 40px 15px 30px;
-    height: 50px;
+    height: 100px;
     display: flex;
     align-items: center;
     border: 1px solid #ebebeb;

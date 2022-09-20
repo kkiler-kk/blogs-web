@@ -15,8 +15,10 @@
           <el-menu-item index="/category/all">文章分类</el-menu-item>
           <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>
-
-          <el-col :span="4" :offset="4">
+          <el-menu-item index="/chat">聊天室</el-menu-item>
+          <el-menu-item index="/program/source/code"><i class="iconfont icon-HTMLyuanma" title="程序源码"></i>
+          </el-menu-item>
+          <el-col :span="3" :offset="3">
             <el-menu-item index="/write"><i class="el-icon-edit"></i>写文章</el-menu-item>
           </el-col>
 
@@ -155,8 +157,8 @@ export default {
 }
 
 .me-header-picture {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: 1px solid #ddd;
   border-radius: 50%;
   vertical-align: middle;

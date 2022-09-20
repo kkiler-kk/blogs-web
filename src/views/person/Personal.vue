@@ -56,12 +56,12 @@
                         </div>
                         <el-menu router active-text-color="#00c3ff" class="el-menu-vertical-demo">
                             <el-menu-item index="info" :route="{ name: 'info', params: $route.params.id }">
-                                <i class="el-icon-info"></i>
+                                <i class="iconfont icon-jianjie"></i>
                                 <span slot="title">简介</span>
                             </el-menu-item>
                             <el-menu-item index="mymessage" v-if="this.$route.params.id == this.$store.state.id"
                                 :route="{ name: 'messages', params: $route.params.id }">
-                                <i class="el-icon-view"></i>
+                                <i class="iconfont icon-fasongxinxi"></i>
                                 <span slot="title">消息</span>
                             </el-menu-item>
                             <el-menu-item index="myarticle" :route="{ name: 'myarticle', params: $route.params.id }">
@@ -74,7 +74,7 @@
                                 <span slot="title">收藏</span>
                             </el-menu-item>
                             <el-menu-item index="myfan" :route="{ name: 'myfan', params: $route.params.id }">
-                                <i class="el-icon-share"></i>
+                                <i class="iconfont icon-wodefensi"></i>
                                 <span slot="title">粉丝</span>
                             </el-menu-item>
                             <el-menu-item index="myfollow" :route="{ name: 'myfollow', params: $route.params.id }">
@@ -237,7 +237,7 @@ export default {
             }
         },
         edit() {
-            this.$refs.dia.open();
+            //this.$refs.dia.open();
         },
     },
 };
