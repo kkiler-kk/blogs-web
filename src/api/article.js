@@ -14,7 +14,7 @@ export function getArticles(query, page, userId) {
       month: query.month,
       tagId: query.tagId,
       userId: parseInt(userId),
-      categoryId: query.categoryId
+      categoryId: query.categoryId3
     }
   })
 }

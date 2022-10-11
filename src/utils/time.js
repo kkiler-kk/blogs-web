@@ -1,18 +1,39 @@
-export function formatTime(time) {
-  const d = new Date(time)
-  const now = Date.now()
+ /**
+* 实时时间转换指令，大于一个月则返回具体的年月日
+* @param { string } timeStamp - 时间 格式：年-月-日 时:分:秒 或 时间戳
+* @returns { string }
+*/
+export function formatTime(timeStamp){
+   var dateTime = new Date(timeStamp);
+   var no1new = dateTime.valueOf();
+   var year = dateTime.getFullYear();
+   var month = dateTime.getMonth() + 1;
+   var day = dateTime.getDate();
+   var hour = dateTime.getHours();
+   var minute = dateTime.getMinutes();
+   var second = dateTime.getSeconds();
+   var now = new Date();
+   var now_new = now.valueOf();
+   var milliseconds = 0;
+   var timeSpanStr;
 
-  const diff = (now - d) / 1000
+   milliseconds = now_new - no1new;
 
-  if (diff < 30) {
-    return '刚刚'
-  } else if (diff < 3600) { // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
-  } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
-  } else if (diff < 3600 * 24 * 2) {
-    return '1天前'
-  }
-
-  return time
-}
+   if (milliseconds <= 1000 * 60 * 1) {
+       timeSpanStr = '刚刚';
+   }else if (1000 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60) {
+       timeSpanStr = Math.round((milliseconds / (1000 * 60))) + '分钟前';
+   }else if (1000 * 60 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60 * 24) {
+       timeSpanStr = Math.round(milliseconds / (1000 * 60 * 60)) + '小时前';
+   }else if (1000 * 60 * 60 * 24 < milliseconds && milliseconds <= 1000 * 60 * 60 * 24 * 15) {
+       timeSpanStr = Math.round(milliseconds / (1000 * 60 * 60 * 24)) + '天前';
+   }else if (milliseconds > 1000 * 60 * 60 * 24 * 15 && year == now.getFullYear()) {
+       // timeSpanStr = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+       timeSpanStr = year + '-' + month + '-' + day
+   }else {
+       // timeSpanStr = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+       timeSpanStr = year + '-' + month + '-' + day
+   }
+   
+   return timeSpanStr;
+   }

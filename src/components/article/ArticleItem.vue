@@ -26,7 +26,7 @@
       <el-tag v-for="t in tags" :key="t.tagName" size="mini" type="success">{{ t.tagName }}</el-tag>
 
       <span class="me-pull-right me-article-count">
-        <i class="el-icon-time"></i>&nbsp;{{ createDate | formatTime }}
+        <i class="el-icon-time"></i>&nbsp;{{ createDate }}
       </span>
 
     </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { string } from "bfj-node4/src/events";
 import { formatTime } from "../../utils/time";
 
 export default {
@@ -48,10 +49,13 @@ export default {
     summary: String,
     author: String,
     tags: Array,
-    createDate: String
+    createDate: Number
   },
   data() {
     return {}
+  },
+  mounted() {
+    console.log(formatTime(this.createDate))
   },
   methods: {
     view(id) {

@@ -36,7 +36,7 @@
                             <div class="num_number">{{ followCounts }}</div>
                             <span class="num_text">关注</span>
                         </div>
-                        <div>
+                        <div style="cursor: pointer" @click="myarticlesCount">
                             <div class="num_number">{{ articlesCount }}</div>
                             <span class="num_text">发帖数</span>
                         </div>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="person_body_list" v-for="(item, index) in person_body_list" :key="index">
                             <router-link :to="{ name: item.name, params: item.params }">{{
-                                    item.label
+                            item.label
                             }}</router-link>
                         </div>
                         <el-menu router active-text-color="#00c3ff" class="el-menu-vertical-demo">
@@ -190,6 +190,11 @@ export default {
                 path: `/newsuser/personal/myfollow/${this.$route.params.id}`,
             });
         },
+        myarticlesCount() {
+            this.$router.push({
+                path: `/newsuser/personal/myarticle/${this.$route.params.id}`,
+            });
+        },
         follow() {
             if (!this.$store.state.id) {
                 this.$message({
@@ -237,7 +242,7 @@ export default {
             }
         },
         edit() {
-            //this.$refs.dia.open();
+            this.$refs.dia.open();
         },
     },
 };
